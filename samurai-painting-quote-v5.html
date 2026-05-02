@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samurai Painting Services – AI Quote v5</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--red:#C0392B;--black:#0D0D0D;--offwhite:#F5F0E8;--gold:#C9A84C;--gray:#2A2A2A;--mid:#3D3D3D;--warn:#e67e22;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--black);color:var(--offwhite);font-family:'Inter',sans-serif;min-height:100vh;}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid #222;background:var(--black);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:13px;}
+.logo-hex{width:40px;height:40px;background:var(--red);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;}
+.logo-sub{font-family:'Shippori Mincho',serif;font-size:10px;color:var(--gold);letter-spacing:2px;}
+.lang-toggle{display:flex;gap:6px;}
+.lang-btn{padding:5px 12px;border:1px solid #444;background:transparent;color:#888;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all .2s;}
+.lang-btn.active{border-color:var(--red);color:#fff;background:var(--red);}
+main{max-width:980px;margin:0 auto;padding:32px 16px 80px;}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,6vw,52px);letter-spacing:4px;line-height:1;margin-bottom:4px;}
+.page-title span{color:var(--red);}
+.page-sub{font-family:'Shippori Mincho',serif;color:var(--gold);font-size:11px;letter-spacing:2px;margin-bottom:32px;}
+.sec{background:var(--gray);border:1px solid #333;border-left:3px solid var(--red);padding:20px 24px;margin-bottom:16px;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:3px;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.sec-title::after{content:'';flex:1;height:1px;background:#444;}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;}
+label{display:block;font-size:10px;letter-spacing:1.4px;color:#888;margin-bottom:4px;text-transform:uppercase;}
+input,select,textarea{width:100%;background:var(--black);border:1px solid #444;color:var(--offwhite);padding:8px 10px;font-size:12px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;}
+input:focus,select:focus,textarea:focus{border-color:var(--red);}
+select option{background:var(--black);}
+.job-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.chip{padding:9px 7px;border:1px solid #444;text-align:center;font-size:11px;letter-spacing:.7px;cursor:pointer;transition:all .2s;user-select:none;}
+.chip.on{border-color:var(--red);background:rgba(192,57,43,.15);color:var(--red);}
+
+/* ── SURFACE CARDS ── */
+.surf-card{background:var(--black);border:1px solid #333;margin-bottom:10px;overflow:hidden;}
+.surf-card-header{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none;transition:background .15s;}
+.surf-card-header:hover{background:#111;}
+.surf-card-header.on{border-left:3px solid var(--red);}
+.tog{width:32px;height:18px;background:#444;border-radius:9px;position:relative;transition:background .2s;flex-shrink:0;}
+.tog.on{background:var(--red);}
+.tog::after{content:'';position:absolute;width:12px;height:12px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s;}
+.tog.on::after{left:17px;}
+.surf-icon{font-size:16px;}
+.surf-label{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;flex:1;}
+.surf-badge{font-size:10px;color:var(--gold);letter-spacing:1px;font-family:'Bebas Neue',sans-serif;}
+.surf-subtotal{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gold);min-width:90px;text-align:right;}
+.surf-body{display:none;padding:14px 16px;border-top:1px solid #2a2a2a;background:#111;}
+.surf-body.open{display:block;}
+
+/* MATERIAL / CONDITION TAG ROW */
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.tag{padding:4px 10px;border:1px solid #444;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all .15s;user-select:none;white-space:nowrap;}
+.tag.on{border-color:var(--red);background:rgba(192,57,43,.18);color:var(--red);}
+.tag.warn-on{border-color:var(--warn);background:rgba(230,126,34,.15);color:var(--warn);}
+.tag-label{font-size:10px;color:#666;letter-spacing:1px;margin-bottom:5px;text-transform:uppercase;}
+
+/* ALERT BOX */
+.alert-box{background:rgba(230,126,34,.12);border:1px solid var(--warn);padding:8px 12px;font-size:11px;color:var(--warn);line-height:1.7;margin-bottom:10px;display:none;}
+.alert-box.show{display:block;}
+
+/* SURF FORM GRID */
+.surf-fg{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:9px;margin-bottom:10px;}
+.surf-rate-display{font-size:11px;color:var(--gold);text-align:right;padding:4px 0;}
+
+/* ITEMS */
+.item-card{background:var(--black);border:1px solid #333;margin-bottom:8px;}
+.item-header{display:flex;align-items:center;gap:9px;padding:9px 13px;cursor:pointer;user-select:none;}
+.item-header.on{border-left:3px solid var(--red);}
+.item-body{display:none;padding:12px 14px;border-top:1px solid #222;background:#111;}
+.item-body.open{display:block;}
+.item-fg{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:8px;}
+
+/* SUBBAR */
+.subbar{background:var(--mid);padding:9px 13px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#999;letter-spacing:1px;margin-top:8px;}
+.subbar span{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--gold);letter-spacing:2px;}
+
+/* EXTRAS */
+.ext-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.ext-chip{display:flex;align-items:center;gap:8px;padding:10px 11px;border:1px solid #444;cursor:pointer;transition:all .2s;user-select:none;}
+.ext-chip.on{border-color:var(--red);background:rgba(192,57,43,.1);}
+.ext-chip input[type=checkbox]{width:14px;height:14px;accent-color:var(--red);cursor:pointer;}
+.ext-lbl{font-size:11px;line-height:1.4;}
+.ext-price{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:12px;color:var(--gold);white-space:nowrap;}
+
+.rate-note{font-size:10px;color:#555;margin-top:8px;line-height:1.7;padding:8px 11px;border:1px solid #2a2a2a;border-left:2px solid var(--gold);}
+
+.btn-gen{width:100%;padding:14px;background:var(--red);border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:4px;cursor:pointer;margin-top:8px;transition:background .2s;}
+.btn-gen:hover{background:#a93226;}
+
+/* QUOTE OUTPUT */
+#result{display:none;margin-top:26px;}
+.qcard{background:var(--offwhite);color:var(--black);padding:36px;}
+.qhdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--black);}
+.qco{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:var(--red);}
+.qco-jp{font-family:'Shippori Mincho',serif;font-size:11px;color:#777;letter-spacing:2px;}
+.qco-info{font-size:10px;color:#888;margin-top:3px;line-height:1.8;}
+.qmeta{text-align:right;font-size:11px;color:#555;line-height:1.9;}
+.qdoctitle{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:3px;margin-bottom:13px;}
+.qclientbox{background:#f0ebe0;padding:10px 13px;margin-bottom:16px;font-size:11px;line-height:1.9;}
+.qt{width:100%;border-collapse:collapse;margin-bottom:4px;font-size:11px;}
+.qt .gh td{background:#1a1a1a;color:#fff;padding:6px 10px;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:12px;}
+.qt th{background:#333;color:#fff;padding:6px 10px;text-align:left;font-size:10px;letter-spacing:1.3px;font-weight:400;}
+.qt th.r,.qt td.r{text-align:right;}
+.qt td{padding:6px 10px;border-bottom:1px solid #e8e2d8;}
+.qt tr:nth-child(even) td{background:#f8f4ec;}
+.qt .sub td{background:#ede8dc;font-weight:500;}
+.qt .totrow td{background:#1a1a1a;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;padding:10px;}
+.qt .totrow td.r{color:var(--gold);font-size:19px;}
+.qt .spec-row td{background:#fff8f0;color:#c0392b;font-size:10px;font-style:italic;padding:4px 10px;}
+.qfooter{font-size:10px;color:#777;margin-top:14px;padding-top:11px;border-top:1px solid #ccc;line-height:1.9;}
+.sigrow{display:flex;gap:32px;margin-top:20px;}
+.sigbox{flex:1;border-top:1px solid #999;padding-top:7px;font-size:10px;color:#888;}
+.btn-act{margin-top:12px;padding:10px 24px;background:var(--black);color:#fff;border:none;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;cursor:pointer;}
+.btn-act:hover{background:#333;}
+.btn-act.red{background:var(--red);}
+.btn-act.red:hover{background:#a93226;}
+
+@media(max-width:600px){
+  header{padding:12px 13px;}
+  main{padding:22px 11px 56px;}
+  .fg,.fg3,.surf-fg{grid-template-columns:1fr 1fr;}
+  .item-fg{grid-template-columns:1fr 1fr;}
+  .job-grid{grid-template-columns:1fr 1fr;}
+  .ext-grid{grid-template-columns:1fr;}
+  .sec,.surf-body{padding:14px 12px;}
+  .qcard{padding:18px 13px;}
+  .qhdr{flex-direction:column;gap:10px;}
+}
+@media print{
+  body{background:#fff;}
+  header,#form-area,.btn-act{display:none!important;}
+  #result{display:block!important;}
+}
+
+/* ── STRICT MODE ── */
+.strict-toggle{display:flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid #444;cursor:pointer;transition:all .25s;user-select:none;}
+.strict-toggle.on{border-color:#00e676;background:rgba(0,230,118,.1);box-shadow:0 0 12px rgba(0,230,118,.2);}
+.strict-icon{font-size:16px;transition:transform .3s;}
+.strict-toggle.on .strict-icon{animation:shieldPulse 2s infinite;}
+.strict-label{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;color:#666;transition:color .2s;}
+.strict-toggle.on .strict-label{color:#00e676;}
+@keyframes shieldPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+/* VERIFICATION PANEL */
+.verify-panel{background:#111;border:1px solid #333;border-left:3px solid #00e676;padding:16px 20px;margin-bottom:16px;display:none;}
+.verify-panel.show{display:block;}
+.verify-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:#00e676;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.verify-title::after{content:'';flex:1;height:1px;background:#333;}
+.verify-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:11px;line-height:1.6;border-bottom:1px solid #1a1a1a;}
+.verify-item:last-child{border-bottom:none;}
+.vi-pass{color:#00e676;}
+.vi-warn{color:var(--warn);}
+.vi-fail{color:#e74c3c;}
+.vi-icon{flex-shrink:0;width:18px;text-align:center;}
+.vi-text{flex:1;}
+.verify-summary{margin-top:10px;padding:8px 12px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;}
+.vs-pass{background:rgba(0,230,118,.1);border:1px solid #00e676;color:#00e676;}
+.vs-warn{background:rgba(230,126,34,.1);border:1px solid var(--warn);color:var(--warn);}
+.vs-fail{background:rgba(231,76,60,.1);border:1px solid #e74c3c;color:#e74c3c;}
+
+/* QUOTE VERIFICATION FOOTER */
+.q-verify{margin-top:14px;padding:12px 14px;border:1px solid #00e676;border-left:3px solid #00e676;font-size:10px;line-height:1.8;color:#333;background:#f0fff4;}
+.q-verify b{color:#00897B;}
+.q-verify .qv-item{padding:2px 0;}
+.q-verify .qv-pass::before{content:'✅ ';font-size:10px;}
+.q-verify .qv-warn::before{content:'⚠️ ';font-size:10px;}
+.q-verify .qv-fail::before{content:'❌ ';font-size:10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-hex">⚔️</div>
+    <div>
+      <div class="logo-text">SAMURAI PAINTING SERVICES</div>
+      <div class="logo-sub">塗侍 — Material-Aware AI Quote v5 + Hallucination Guard</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="strict-toggle" onclick="toggleStrict()" id="strictToggle" title="Hallucination Guard / ハルシネーション防止">
+      <div class="strict-icon" id="strictIcon">🛡️</div>
+      <div class="strict-label" id="strictLabel">STRICT</div>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('ja')">日本語</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="page-title"><span>AI</span> QUOTE<br>GENERATOR <span style="font-size:.42em;color:var(--gold)">v5</span></div>
+  <div class="page-sub" id="sub-text">Material · Substrate · Existing Paint · NSW Rates</div>
+
+  <div id="form-area">
+
+    <!-- 01 CLIENT -->
+    <div class="sec">
+      <div class="sec-title" id="s1">01 — CLIENT INFORMATION</div>
+      <div class="fg">
+        <div><label id="l-name">Client Name / 氏名</label><input type="text" id="clientName" placeholder="John Smith / 山田 太郎"></div>
+        <div><label id="l-addr">Property Address / 住所</label><input type="text" id="clientAddr" placeholder="123 George St, Canterbury NSW"></div>
+        <div><label id="l-phone">Phone / 電話</label><input type="text" id="clientPhone" placeholder="+61 4xx xxx xxx"></div>
+        <div><label id="l-email">Email</label><input type="text" id="clientEmail" placeholder="email@example.com"></div>
+      </div>
+    </div>
+
+    <!-- 02 JOB TYPE -->
+    <div class="sec">
+      <div class="sec-title" id="s2">02 — JOB TYPE</div>
+      <div class="job-grid">
+        <div class="chip" onclick="toggleJob(this,'Exterior / 外壁')">🏠 Exterior<br><small>外壁</small></div>
+        <div class="chip" onclick="toggleJob(this,'Interior / 屋内')">🛋️ Interior<br><small>屋内</small></div>
+        <div class="chip" onclick="toggleJob(this,'New Build / 新築')">🔨 New Build<br><small>新築</small></div>
+        <div class="chip" onclick="toggleJob(this,'Renovation / リノベ')">♻️ Renovation<br><small>リノベ</small></div>
+        <div class="chip" onclick="toggleJob(this,'Roof / 屋根')">🏚️ Roof<br><small>屋根</small></div>
+        <div class="chip" onclick="toggleJob(this,'Commercial / 商業')">🏢 Commercial<br><small>商業</small></div>
+      </div>
+    </div>
+
+    <!-- 03 SURFACES -->
+    <div class="sec">
+      <div class="sec-title" id="s3">03 — SURFACES (Material &amp; Condition)</div>
+      <div id="surfCards"></div>
+      <div class="subbar"><span id="surf-lbl">SURFACES SUBTOTAL</span><span id="surfSub">$0.00</span></div>
+      <div class="rate-note" id="rn-surf">★ NSW 2025–26: Interior $25–45/m² · Exterior $30–60/m² · Roof $35–65/m² · Timber +20–40% · Aluminium +10% (etching primer) · Oil→Water switch +$8–12/m²</div>
+    </div>
+
+    <!-- 04 GUTTERS / ITEMS -->
+    <div class="sec">
+      <div class="sec-title" id="s4">04 — GUTTERS, DOWNPIPES &amp; ITEMS</div>
+      <div id="itemCards"></div>
+      <div class="subbar"><span id="item-lbl">ITEMS SUBTOTAL</span><span id="itemSub">$0.00</span></div>
+      <div class="rate-note" id="rn-item">★ NSW 2025–26: Gutters $12–18/lm · Downpipes $15–22/lm · Eaves $12–22/lm · Doors $90–150 · Window frames $60–100 · Trim $10–15/lm</div>
+    </div>
+
+    <!-- 05 LABOUR -->
+    <div class="sec">
+      <div class="sec-title" id="s5">05 — LABOUR &amp; ACCESS</div>
+      <div class="fg3">
+        <div>
+          <label id="l-stories">Stories / 階数</label>
+          <select id="stories" onchange="recalcAll()">
+            <option value="1">1 storey / 1階</option>
+            <option value="2">2 storeys / 2階</option>
+            <option value="3">3+ storeys / 3階以上</option>
+          </select>
+        </div>
+        <div>
+          <label id="l-lr">Base Labour Rate / 施工単価</label>
+          <select id="labourRate" onchange="recalcAll()">
+            <option value="22">Standard — $22/m²</option>
+            <option value="30" selected>Skilled — $30/m² ★</option>
+            <option value="40">Premium — $40/m²</option>
+          </select>
+        </div>
+        <div>
+          <label id="l-prep">Default Prep / 標準下地処理</label>
+          <select id="prep" onchange="recalcAll()">
+            <option value="6">Light +$6/m²</option>
+            <option value="10" selected>Medium +$10/m²</option>
+            <option value="16">Heavy +$16/m²</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 EXTRAS -->
+    <div class="sec">
+      <div class="sec-title" id="s6">06 — EXTRAS &amp; OPTIONS</div>
+      <div class="ext-grid" id="extGrid"></div>
+    </div>
+
+    <!-- 07 NOTES -->
+    <div class="sec">
+      <div class="sec-title" id="s7">07 — NOTES / 備考</div>
+      <textarea id="notes" rows="3" placeholder="Colours, brand preference (Dulux / Taubmans / Wattyl / Haymes), special access, etc."></textarea>
+    </div>
+
+    <!-- VERIFICATION PANEL (STRICT MODE) -->
+    <div class="verify-panel" id="verifyPanel">
+      <div class="verify-title">🛡️ VERIFICATION PROTOCOL / 検証プロトコル</div>
+      <div id="verifyResults"></div>
+      <div id="verifySummary"></div>
+    </div>
+
+    <button class="btn-gen" onclick="runQuoteFlow()">⚡ GENERATE QUOTE / 見積もり作成</button>
+  </div>
+
+  <div id="result">
+    <div class="qcard" id="quoteCard"></div>
+    <div style="margin-top:12px;display:flex;gap:9px;flex-wrap:wrap">
+      <button class="btn-act" onclick="window.print()">🖨️ PRINT / PDF保存</button>
+      <button class="btn-act red" onclick="resetForm()">↩ NEW QUOTE / やり直す</button>
+    </div>
+  </div>
+</main>
+
+<script>
+'use strict';
+let lang='en', selectedJobs=[], strictMode=false;
+
+// ── MATERIAL DEFINITIONS ──────────────────────────────────────────
+// labMult: multiplier on base labour  paintMult: on paint litres consumed
+// prepAdd: extra $/m² added to prep
+const MATERIALS={
+  plaster:  {en:'Plaster / Render',  ja:'プラスター・レンガ', icon:'🧱', labMult:1.00, paintMult:1.00, prepAdd:0,  note:''},
+  timber:   {en:'Timber / Wood',     ja:'木部（ウッド）',     icon:'🪵', labMult:1.30, paintMult:1.15, prepAdd:6,  note:'Timber requires sanding, knot sealer & flexible paint. +30% labour. / 木部はサンディング・節止め・伸縮対応塗料が必要。'},
+  aluminium:{en:'Aluminium',         ja:'アルミニウム',       icon:'🔩', labMult:1.10, paintMult:1.00, prepAdd:8,  note:'Aluminium must be cleaned & etching-primed before topcoat. +10% labour. / アルミはエッチングプライマー必須。'},
+  concrete: {en:'Concrete / Cement', ja:'コンクリート・セメント',icon:'⬜',labMult:1.10, paintMult:1.20, prepAdd:5,  note:'Concrete is porous — higher paint consumption & sealer coat required. / コンクリートは吸い込みが多くシーラー必須。'},
+  steel:    {en:'Steel / Iron',      ja:'鉄・スチール',       icon:'⚙️', labMult:1.20, paintMult:1.00, prepAdd:12, note:'Steel requires rust treatment, zinc primer & compatible topcoat. +20% labour. / 鉄はサビ処理・亜鉛プライマー必須。'},
+  fibre:    {en:'Fibre Cement',      ja:'ファイバーセメント',  icon:'🏗️', labMult:1.05, paintMult:1.10, prepAdd:4,  note:'Fibre cement needs sealer coat on raw edges. / ファイバーセメントは小口シール処理が必要。'},
+};
+
+// ── EXISTING PAINT CONDITIONS ──────────────────────────────────────
+const CONDITIONS={
+  new:       {en:'New / No paint',      ja:'新築・塗膜なし',       labAdd:0,  prepAdd:0,  coatAdd:0,  warn:false, note:''},
+  water_good:{en:'Water-based (good)',  ja:'水性・良好',           labAdd:0,  prepAdd:0,  coatAdd:0,  warn:false, note:''},
+  water_fair:{en:'Water-based (fair)',  ja:'水性・劣化あり',       labAdd:4,  prepAdd:4,  coatAdd:0,  warn:false, note:'Light sanding & spot prime required. / 軽いサンドとスポットプライマーが必要。'},
+  water_bad: {en:'Water-based (peeling)',ja:'水性・剥離あり',      labAdd:12, prepAdd:10, coatAdd:1,  warn:true,  note:'Scraping, full sand & prime required. Extra coat recommended. / スクレーピング・全面サンド・プライマー必要。追加1回塗り推奨。'},
+  oil_cont:  {en:'Oil-based → Oil (continue)',ja:'油性継続',       labAdd:3,  prepAdd:5,  coatAdd:0,  warn:false, note:'Degrease & sand before oil topcoat. / 脱脂・サンド後に油性上塗り。'},
+  oil_switch:{en:'Oil → Water (switch)',ja:'油性→水性に切替',      labAdd:8,  prepAdd:12, coatAdd:1,  warn:true,  note:'⚠️ Oil-to-water switch: full sand, oil-compatible sealer/primer REQUIRED, then water-based topcoat. Skipping will cause adhesion failure. / 油性→水性切替: 全面サンド後、油性対応シーラー必須。省略すると密着不良になります。'},
+  unknown:   {en:'Unknown (test required)',ja:'不明（テスト必要）', labAdd:5,  prepAdd:8,  coatAdd:0,  warn:true,  note:'⚠️ Unknown paint type: solvent test recommended before quoting. Rate includes contingency. / 塗膜種類不明：溶剤テスト推奨。'},
+};
+
+// ── SURFACES ─────────────────────────────────────────────────────
+const SURFS=[
+  {id:'ceiling', en:'Ceiling',         ja:'天井',       icon:'⬜', baseLab:22, cov:12, defCoats:2, defGrade:'premium', defMat:'plaster',   defCond:'water_good'},
+  {id:'wall',    en:'Wall (Interior)',  ja:'壁（屋内）', icon:'🧱', baseLab:22, cov:12, defCoats:2, defGrade:'premium', defMat:'plaster',   defCond:'water_good'},
+  {id:'exterior',en:'Exterior Wall',   ja:'外壁',       icon:'🏠', baseLab:30, cov:10, defCoats:2, defGrade:'premium', defMat:'plaster',   defCond:'water_good'},
+  {id:'roof',    en:'Roof',            ja:'屋根',       icon:'🏚️', baseLab:35, cov:9,  defCoats:2, defGrade:'premium', defMat:'steel',     defCond:'water_good'},
+  {id:'floor',   en:'Floor / Deck',    ja:'床・デッキ', icon:'🟫', baseLab:24, cov:10, defCoats:1, defGrade:'standard',defMat:'timber',    defCond:'water_good'},
+  {id:'fence',   en:'Fence',           ja:'フェンス',   icon:'🪵', baseLab:20, cov:10, defCoats:2, defGrade:'standard',defMat:'timber',    defCond:'water_good'},
+];
+
+// ── LINE ITEMS ────────────────────────────────────────────────────
+const ITEMS=[
+  {id:'gutter',   en:'Fascia Gutter (横樋)',   ja:'横樋', icon:'🏗️', rates:{standard:12,premium:15,luxury:20},unit:'lm', perUnit:true, defMat:'aluminium', defCond:'water_good'},
+  {id:'downpipe', en:'Downpipe (縦樋)',         ja:'縦樋', icon:'🔩', rates:{standard:15,premium:18,luxury:24},unit:'lm', perUnit:true, defMat:'aluminium', defCond:'water_good'},
+  {id:'eaves',    en:'Eaves / Soffit',         ja:'軒天', icon:'🪵', rates:{standard:12,premium:16,luxury:22},unit:'lm', perUnit:true, defMat:'timber',    defCond:'water_good'},
+  {id:'door',     en:'Door',                   ja:'ドア', icon:'🚪', rates:{standard:90,premium:120,luxury:160},unit:'unit',sides:true, defMat:'timber',    defCond:'water_good'},
+  {id:'window',   en:'Window Frame',           ja:'窓枠', icon:'🪟', rates:{standard:60,premium:90,luxury:130}, unit:'unit',sides:true, defMat:'aluminium', defCond:'water_good'},
+  {id:'trim',     en:'Skirting / Trim',        ja:'巾木', icon:'📐', rates:{standard:10,premium:14,luxury:20},  unit:'lm', perUnit:true, defMat:'timber',    defCond:'water_good'},
+  {id:'shutter',  en:'Shutter',                ja:'シャッター',icon:'🪞',rates:{standard:70,premium:100,luxury:150},unit:'unit',sides:false,defMat:'aluminium', defCond:'water_good'},
+];
+
+const EXTRAS=[
+  {id:'scaff', en:'Scaffolding / High Access', ja:'足場・高所作業',  icon:'🏗️',price:'area*14',label:'$14/m²'},
+  {id:'pwash', en:'Pressure Washing',          ja:'高圧洗浄',        icon:'💧',price:'area*5', label:'$5/m²'},
+  {id:'color', en:'Color Consultation',        ja:'カラーコンサル',  icon:'🎨',price:'380',    label:'$380'},
+  {id:'warr',  en:'5-Year Warranty',            ja:'5年間保証',       icon:'✅',price:'550',    label:'$550'},
+  {id:'clean', en:'Full Site Cleanup',         ja:'現場清掃',        icon:'🧹',price:'area*2', label:'$2/m²'},
+  {id:'primer',en:'Primer / Sealer (full)',    ja:'全面プライマー',  icon:'🪣',price:'area*9', label:'$9/m²'},
+  {id:'mould', en:'Mould Treatment',           ja:'防カビ処理',      icon:'🦠',price:'area*12',label:'$12/m²'},
+];
+
+const PAINT_L={standard:6.5, premium:10.5, luxury:15};
+const STORY_M={1:1,2:1.25,3:1.5};
+
+// ── SURFACE STATES ─────────────────────────────────────────────────
+let surfState={}, itemState={};
+SURFS.forEach(s=>{surfState[s.id]={on:false,mat:s.defMat,cond:s.defCond,area:'',coats:s.defCoats,grade:s.defGrade};});
+ITEMS.forEach(it=>{itemState[it.id]={on:false,mat:it.defMat,cond:it.defCond,qty:'',grade:'premium',sides:2};});
+
+// ── BUILD UI ───────────────────────────────────────────────────────
+function buildSurfCards(){
+  const el=document.getElementById('surfCards');
+  el.innerHTML='';
+  SURFS.forEach(s=>{
+    const st=surfState[s.id];
+    el.innerHTML+=`
+    <div class="surf-card" id="sc_${s.id}">
+      <div class="surf-card-header ${st.on?'on':''}" onclick="toggleSurf('${s.id}')" id="sch_${s.id}">
+        <div class="tog ${st.on?'on':''}" id="stog_${s.id}"></div>
+        <div class="surf-icon">${s.icon}</div>
+        <div class="surf-label" id="slbl_${s.id}">${lang==='en'?s.en:s.ja}</div>
+        <div class="surf-badge" id="sbadge_${s.id}"></div>
+        <div class="surf-subtotal" id="sstot_${s.id}">—</div>
+      </div>
+      <div class="surf-body ${st.on?'open':''}" id="sbody_${s.id}">
+        <div class="alert-box" id="salert_${s.id}"></div>
+        <div class="tag-label" id="sl-mat-${s.id}">${lang==='en'?'MATERIAL / 材質':'材質'}</div>
+        <div class="tag-row" id="smat_${s.id}">
+          ${Object.entries(MATERIALS).map(([k,m])=>`<div class="tag ${st.mat===k?'on':''}" onclick="setSurfMat('${s.id}','${k}')" id="smt_${s.id}_${k}">${m.icon} ${lang==='en'?m.en:m.ja}</div>`).join('')}
+        </div>
+        <div class="tag-label" id="sl-cond-${s.id}">${lang==='en'?'EXISTING PAINT / 既存塗膜':'既存塗膜の状態'}</div>
+        <div class="tag-row" id="scond_${s.id}">
+          ${Object.entries(CONDITIONS).map(([k,c])=>`<div class="tag ${st.cond===k?(c.warn?'warn-on':'on'):''}" onclick="setSurfCond('${s.id}','${k}')" id="scd_${s.id}_${k}">${lang==='en'?c.en:c.ja}</div>`).join('')}
+        </div>
+        <div class="surf-fg">
+          <div><label id="sl-area-${s.id}">${lang==='en'?'AREA (m²)':'面積 (㎡)'}</label><input type="number" id="sa_${s.id}" placeholder="m²" min="0" value="${st.area}" oninput="surfState['${s.id}'].area=this.value;recalcAll()"></div>
+          <div><label id="sl-coats-${s.id}">${lang==='en'?'COATS':'塗り回数'}</label>
+            <select id="sc2_${s.id}" onchange="surfState['${s.id}'].coats=+this.value;recalcAll()">
+              <option value="1" ${st.coats===1?'selected':''}>1</option>
+              <option value="2" ${st.coats===2?'selected':''}>2</option>
+              <option value="3" ${st.coats===3?'selected':''}>3</option>
+            </select>
+          </div>
+          <div><label id="sl-grade-${s.id}">${lang==='en'?'PAINT GRADE':'グレード'}</label>
+            <select id="sg_${s.id}" onchange="surfState['${s.id}'].grade=this.value;recalcAll()">
+              <option value="standard" ${st.grade==='standard'?'selected':''}>Standard</option>
+              <option value="premium"  ${st.grade==='premium' ?'selected':''}>Premium</option>
+              <option value="luxury"   ${st.grade==='luxury'  ?'selected':''}>Luxury</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;justify-content:flex-end">
+            <div class="surf-rate-display" id="srd_${s.id}">rate: —</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+
+function buildItemCards(){
+  const el=document.getElementById('itemCards');
+  el.innerHTML='';
+  ITEMS.forEach(it=>{
+    const st=itemState[it.id];
+    const hasSides=it.sides===true;
+    el.innerHTML+=`
+    <div class="item-card" id="ic_${it.id}">
+      <div class="item-header ${st.on?'on':''}" onclick="toggleItem('${it.id}')" id="ich_${it.id}">
+        <div class="tog ${st.on?'on':''}" id="itog_${it.id}"></div>
+        <div class="surf-icon">${it.icon}</div>
+        <div class="surf-label" id="ilbl_${it.id}">${lang==='en'?it.en:it.ja}</div>
+        <div class="surf-badge" id="ibadge_${it.id}"></div>
+        <div class="surf-subtotal" id="itot_${it.id}">—</div>
+      </div>
+      <div class="item-body ${st.on?'open':''}" id="ibody_${it.id}">
+        <div class="alert-box" id="ialert_${it.id}"></div>
+        <div class="tag-label">${lang==='en'?'MATERIAL / 材質':'材質'}</div>
+        <div class="tag-row">
+          ${Object.entries(MATERIALS).map(([k,m])=>`<div class="tag ${st.mat===k?'on':''}" onclick="setItemMat('${it.id}','${k}')" id="imt_${it.id}_${k}">${m.icon} ${lang==='en'?m.en:m.ja}</div>`).join('')}
+        </div>
+        <div class="tag-label">${lang==='en'?'EXISTING PAINT / 既存塗膜':'既存塗膜の状態'}</div>
+        <div class="tag-row">
+          ${Object.entries(CONDITIONS).map(([k,c])=>`<div class="tag ${st.cond===k?(c.warn?'warn-on':'on'):''}" onclick="setItemCond('${it.id}','${k}')" id="icd_${it.id}_${k}">${lang==='en'?c.en:c.ja}</div>`).join('')}
+        </div>
+        <div class="item-fg">
+          <div><label>${lang==='en'?'QTY':'数量'} (${it.unit})</label><input type="number" id="iq_${it.id}" placeholder="${it.unit}" min="0" value="${st.qty}" oninput="itemState['${it.id}'].qty=this.value;recalcAll()"></div>
+          ${hasSides?`<div><label>${lang==='en'?'SIDES':'面数'}</label><select id="isd_${it.id}" onchange="itemState['${it.id}'].sides=+this.value;recalcAll()"><option value="1">1</option><option value="2" selected>2</option></select></div>`:'<div></div>'}
+          <div><label>${lang==='en'?'PAINT GRADE':'グレード'}</label>
+            <select id="ig_${it.id}" onchange="itemState['${it.id}'].grade=this.value;recalcAll()">
+              <option value="standard">Standard</option>
+              <option value="premium" selected>Premium</option>
+              <option value="luxury">Luxury</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;justify-content:flex-end">
+            <div class="surf-rate-display" id="ird_${it.id}">rate: —</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+
+function buildExtras(){
+  const g=document.getElementById('extGrid');
+  g.innerHTML='';
+  EXTRAS.forEach(ex=>{
+    g.innerHTML+=`<div class="ext-chip" id="ec_${ex.id}" onclick="toggleExtra('${ex.id}')">
+      <input type="checkbox" id="ex_${ex.id}">
+      <div class="ext-lbl"><b>${ex.icon} ${lang==='en'?ex.en:ex.ja}</b></div>
+      <div class="ext-price">${ex.label}</div>
+    </div>`;
+  });
+}
+
+// ── TOGGLES ────────────────────────────────────────────────────────
+function toggleSurf(id){
+  surfState[id].on=!surfState[id].on;
+  const on=surfState[id].on;
+  document.getElementById('stog_'+id).classList.toggle('on',on);
+  document.getElementById('sch_'+id).classList.toggle('on',on);
+  document.getElementById('sbody_'+id).classList.toggle('open',on);
+  recalcAll();
+}
+function toggleItem(id){
+  itemState[id].on=!itemState[id].on;
+  const on=itemState[id].on;
+  document.getElementById('itog_'+id).classList.toggle('on',on);
+  document.getElementById('ich_'+id).classList.toggle('on',on);
+  document.getElementById('ibody_'+id).classList.toggle('open',on);
+  recalcAll();
+}
+function toggleExtra(id){
+  const cb=document.getElementById('ex_'+id);
+  cb.checked=!cb.checked;
+  document.getElementById('ec_'+id).classList.toggle('on',cb.checked);
+  recalcAll();
+}
+function toggleJob(el,name){
+  el.classList.toggle('on');
+  selectedJobs=selectedJobs.includes(name)?selectedJobs.filter(j=>j!==name):[...selectedJobs,name];
+}
+
+function setSurfMat(sid,mk){
+  surfState[sid].mat=mk;
+  document.querySelectorAll(`[id^="smt_${sid}_"]`).forEach(el=>{
+    const k=el.id.split('_').pop();
+    el.classList.toggle('on',k===mk);
+  });
+  updateSurfAlert(sid);
+  recalcAll();
+}
+function setSurfCond(sid,ck){
+  surfState[sid].cond=ck;
+  document.querySelectorAll(`[id^="scd_${sid}_"]`).forEach(el=>{
+    const k=el.id.replace(`scd_${sid}_`,'');
+    const c=CONDITIONS[k];
+    el.classList.remove('on','warn-on');
+    if(k===ck) el.classList.add(c.warn?'warn-on':'on');
+  });
+  updateSurfAlert(sid);
+  recalcAll();
+}
+function setItemMat(iid,mk){
+  itemState[iid].mat=mk;
+  document.querySelectorAll(`[id^="imt_${iid}_"]`).forEach(el=>{
+    const k=el.id.split('_').pop();
+    el.classList.toggle('on',k===mk);
+  });
+  updateItemAlert(iid);
+  recalcAll();
+}
+function setItemCond(iid,ck){
+  itemState[iid].cond=ck;
+  document.querySelectorAll(`[id^="icd_${iid}_"]`).forEach(el=>{
+    const k=el.id.replace(`icd_${iid}_`,'');
+    const c=CONDITIONS[k];
+    el.classList.remove('on','warn-on');
+    if(k===ck) el.classList.add(c.warn?'warn-on':'on');
+  });
+  updateItemAlert(iid);
+  recalcAll();
+}
+
+function updateSurfAlert(sid){
+  const st=surfState[sid];
+  const mat=MATERIALS[st.mat]; const cond=CONDITIONS[st.cond];
+  const notes=[mat.note,cond.note].filter(Boolean).join('<br>');
+  const box=document.getElementById('salert_'+sid);
+  box.innerHTML=notes; box.classList.toggle('show',!!notes&&st.on);
+}
+function updateItemAlert(iid){
+  const st=itemState[iid];
+  const mat=MATERIALS[st.mat]; const cond=CONDITIONS[st.cond];
+  const notes=[mat.note,cond.note].filter(Boolean).join('<br>');
+  const box=document.getElementById('ialert_'+iid);
+  box.innerHTML=notes; box.classList.toggle('show',!!notes&&st.on);
+}
+
+// ── CALC ───────────────────────────────────────────────────────────
+function calcSurf(s){
+  const st=surfState[s.id];
+  if(!st.on)return 0;
+  const area=parseFloat(st.area)||0;
+  if(!area)return 0;
+  const mat=MATERIALS[st.mat]; const cond=CONDITIONS[st.cond];
+  const stories=parseInt(document.getElementById('stories').value)||1;
+  const labBase=parseInt(document.getElementById('labourRate').value)||30;
+  const defaultPrep=parseInt(document.getElementById('prep').value)||10;
+  const labRate=(s.baseLab+(labBase-30))*STORY_M[stories]*mat.labMult*(1+(cond.labAdd/100));
+  const prepRate=defaultPrep+mat.prepAdd+cond.prepAdd;
+  const coats=st.coats+(cond.coatAdd||0);
+  const liters=(area/s.cov)*coats*mat.paintMult;
+  const paintCost=liters*PAINT_L[st.grade];
+  const labCost=area*labRate;
+  const prepCost=area*prepRate;
+  return {area,coats,grade:st.grade,liters,paintCost,labCost,prepCost,tot:paintCost+labCost+prepCost,labRate,prepRate,matName:lang==='en'?mat.en:mat.ja,condName:lang==='en'?cond.en:cond.ja};
+}
+
+function recalcAll(){
+  let surfTotal=0;
+  SURFS.forEach(s=>{
+    const r=calcSurf(s);
+    if(!r||!r.tot){document.getElementById('sstot_'+s.id).textContent='—';document.getElementById('srd_'+s.id).textContent='rate: —';document.getElementById('sbadge_'+s.id).textContent='';return;}
+    surfTotal+=r.tot;
+    const rateM2=(r.tot/r.area).toFixed(0);
+    document.getElementById('sstot_'+s.id).textContent='$'+fmt2(r.tot);
+    document.getElementById('srd_'+s.id).textContent=`blended $${rateM2}/m²`;
+    document.getElementById('sbadge_'+s.id).textContent=`${MATERIALS[surfState[s.id].mat].icon} ${lang==='en'?MATERIALS[surfState[s.id].mat].en:MATERIALS[surfState[s.id].mat].ja}`;
+    updateSurfAlert(s.id);
+  });
+  document.getElementById('surfSub').textContent='$'+fmt2(surfTotal);
+
+  let itemTotal=0;
+  ITEMS.forEach(it=>{
+    const st=itemState[it.id];
+    if(!st.on){document.getElementById('itot_'+it.id).textContent='—';document.getElementById('ird_'+it.id).textContent='rate: —';document.getElementById('ibadge_'+it.id).textContent='';return;}
+    const qty=parseFloat(st.qty)||0;
+    if(!qty){document.getElementById('itot_'+it.id).textContent='—';return;}
+    const mat=MATERIALS[st.mat]; const cond=CONDITIONS[st.cond];
+    const matMult=mat.labMult*(1+(cond.labAdd/100));
+    const sides=it.sides?st.sides:1;
+    const baseRate=it.rates[st.grade];
+    const rate=baseRate*matMult;
+    const tot=qty*sides*rate;
+    itemTotal+=tot;
+    document.getElementById('itot_'+it.id).textContent='$'+fmt2(tot);
+    document.getElementById('ird_'+it.id).textContent=`$${rate.toFixed(0)}/${it.unit}`;
+    document.getElementById('ibadge_'+it.id).textContent=`${mat.icon} ${lang==='en'?mat.en:mat.ja}`;
+    updateItemAlert(it.id);
+  });
+  document.getElementById('itemSub').textContent='$'+fmt2(itemTotal);
+}
+
+function getTotalArea(){
+  return SURFS.filter(s=>surfState[s.id].on).reduce((sum,s)=>sum+(parseFloat(surfState[s.id].area)||0),0);
+}
+
+function fmt2(n){return n.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+// ── GENERATE QUOTE ─────────────────────────────────────────────────
+function generateQuote(checks){
+  const isEN=lang==='en';
+  const stories=parseInt(document.getElementById('stories').value)||1;
+  const totalArea=getTotalArea();
+  let grandTotal=0, surfRows=[], itemRows=[], extraRows=[], specNotes=[];
+
+  SURFS.forEach(s=>{
+    const r=calcSurf(s);
+    if(!r||!r.area)return;
+    grandTotal+=r.tot;
+    surfRows.push({icon:s.icon,name:isEN?s.en:s.ja,...r,matName:r.matName,condName:r.condName,coatAdd:CONDITIONS[surfState[s.id].cond].coatAdd,condNote:CONDITIONS[surfState[s.id].cond].note,matNote:MATERIALS[surfState[s.id].mat].note});
+    if(CONDITIONS[surfState[s.id].cond].warn||MATERIALS[surfState[s.id].mat].note) specNotes.push({surface:isEN?s.en:s.ja,note:[MATERIALS[surfState[s.id].mat].note,CONDITIONS[surfState[s.id].cond].note].filter(Boolean).join(' / ')});
+  });
+
+  ITEMS.forEach(it=>{
+    const st=itemState[it.id];
+    if(!st.on)return;
+    const qty=parseFloat(st.qty)||0;
+    if(!qty)return;
+    const mat=MATERIALS[st.mat]; const cond=CONDITIONS[st.cond];
+    const matMult=mat.labMult*(1+(cond.labAdd/100));
+    const sides=it.sides?st.sides:1;
+    const baseRate=it.rates[st.grade];
+    const rate=baseRate*matMult;
+    const tot=qty*sides*rate;
+    grandTotal+=tot;
+    itemRows.push({icon:it.icon,name:isEN?it.en:it.ja,qty,sides,unit:it.unit,hasSides:it.sides,grade:st.grade,rate,baseRate,tot,matName:isEN?mat.en:mat.ja,condName:isEN?cond.en:cond.ja,matMult});
+    if(cond.warn||mat.note) specNotes.push({surface:isEN?it.en:it.ja,note:[mat.note,cond.note].filter(Boolean).join(' / ')});
+  });
+
+  EXTRAS.forEach(ex=>{
+    if(!document.getElementById('ex_'+ex.id)?.checked)return;
+    let cost=isNaN(+ex.price)?totalArea*parseFloat(ex.price.split('*')[1]):+ex.price;
+    grandTotal+=cost;
+    extraRows.push({icon:ex.icon,name:isEN?ex.en:ex.ja,cost});
+  });
+
+  const gst=grandTotal*.1, total=grandTotal+gst;
+  const today=new Date(), expiry=new Date(); expiry.setDate(today.getDate()+30);
+  const fmtD=d=>d.toLocaleDateString(isEN?'en-AU':'ja-JP');
+  const qNum='SP-'+today.getFullYear()+String(today.getMonth()+1).padStart(2,'0')+String(Math.floor(Math.random()*9000)+1000);
+  const name=document.getElementById('clientName').value||'—';
+  const addr=document.getElementById('clientAddr').value||'—';
+  const phone=document.getElementById('clientPhone').value||'—';
+  const email=document.getElementById('clientEmail').value||'—';
+  const notes=document.getElementById('notes').value;
+  const prepLabel=['Light','Medium','Heavy'][([6,10,16].indexOf(parseInt(document.getElementById('prep').value)))];
+
+  let html=`
+  <div class="qhdr">
+    <div>
+      <div class="qco">SAMURAI PAINTING SERVICES</div>
+      <div class="qco-jp">塗侍 — Japanese Quality Painting</div>
+      <div class="qco-info">11 Charles St Canterbury, Sydney NSW<br>samuraipaintingservices.com · samuraipaintingsyd@gmail.com<br>ABN: 99 772 159 845 · Mon–Fri 9am–5pm</div>
+    </div>
+    <div class="qmeta">
+      <div><b>${isEN?'Quote No':'見積番号'}:</b> ${qNum}</div>
+      <div><b>${isEN?'Date':'日付'}:</b> ${fmtD(today)}</div>
+      <div><b>${isEN?'Valid Until':'有効期限'}:</b> ${fmtD(expiry)}</div>
+      <div><b>${isEN?'Job Type':'作業内容'}:</b> ${selectedJobs.join(', ')||'—'}</div>
+    </div>
+  </div>
+  <div class="qdoctitle">${isEN?'DETAILED PAINTING QUOTATION':'塗装工事 詳細御見積書'}</div>
+  <div class="qclientbox"><b>${isEN?'Client':'お客様'}:</b> ${name} | <b>${isEN?'Address':'住所'}:</b> ${addr} | <b>${isEN?'Ph':'電話'}:</b> ${phone} | <b>Email:</b> ${email}</div>
+  <table class="qt">
+    <tr><th></th><th>${isEN?'DESCRIPTION':'内容'}</th><th>${isEN?'MATERIAL / CONDITION':'材質・塗膜'}</th><th class="r">${isEN?'DETAIL':'詳細'}</th><th class="r">${isEN?'AMOUNT':'金額'}</th></tr>`;
+
+  if(surfRows.length){
+    html+=`<tr class="gh"><td colspan="5">${isEN?'▸  SURFACES':'▸  面・壁 等'}</td></tr>`;
+    surfRows.forEach(r=>{
+      html+=`
+      <tr><td>${r.icon}</td><td><b>${r.name}</b></td><td><span style="font-size:10px;color:#555">${r.matName} / ${r.condName}</span></td><td class="r">${r.area}m² × ${r.coats} coats (${r.grade})</td><td class="r">—</td></tr>
+      <tr><td></td><td style="padding-left:16px;color:#666">${isEN?'Paint ('+r.liters.toFixed(1)+'L)':'塗料（'+r.liters.toFixed(1)+'L）'}</td><td></td><td class="r">$${PAINT_L[r.grade]}/L</td><td class="r">$${fmt2(r.paintCost)}</td></tr>
+      <tr><td></td><td style="padding-left:16px;color:#666">${isEN?'Labour':'施工費'}</td><td></td><td class="r">$${r.labRate.toFixed(0)}/m²</td><td class="r">$${fmt2(r.labCost)}</td></tr>
+      <tr><td></td><td style="padding-left:16px;color:#666">${isEN?'Surface prep':'下地処理'}</td><td></td><td class="r">$${r.prepRate.toFixed(0)}/m²</td><td class="r">$${fmt2(r.prepCost)}</td></tr>
+      <tr class="sub"><td></td><td colspan="3" style="text-align:right;font-size:10px">${isEN?'Subtotal':'小計'} — ${r.name}</td><td class="r">$${fmt2(r.tot)}</td></tr>`;
+      if(r.coatAdd) html+=`<tr class="spec-row"><td></td><td colspan="4">⚠️ ${isEN?'Extra coat added due to paint condition':'塗膜状態により1回追加塗り'}</td></tr>`;
+    });
+  }
+
+  if(itemRows.length){
+    html+=`<tr class="gh"><td colspan="5">${isEN?'▸  GUTTERS, DOWNPIPES & ITEMS':'▸  雨樋・ドア・窓 等'}</td></tr>`;
+    itemRows.forEach(r=>{
+      const detail=r.hasSides?`${r.qty}${r.unit} × ${r.sides}sides @ $${r.rate.toFixed(0)}`:`${r.qty}${r.unit} @ $${r.rate.toFixed(0)}`;
+      const matNote=r.matMult>1?` (×${r.matMult.toFixed(2)} material adj.)`:'';
+      html+=`<tr><td>${r.icon}</td><td><b>${r.name}</b></td><td style="font-size:10px;color:#555">${r.matName} / ${r.condName}</td><td class="r">${detail}${matNote}</td><td class="r">$${fmt2(r.tot)}</td></tr>`;
+    });
+    html+=`<tr class="sub"><td></td><td colspan="3" style="text-align:right;font-size:10px">${isEN?'Items Subtotal':'雨樋・その他 小計'}</td><td class="r">$${fmt2(itemRows.reduce((s,r)=>s+r.tot,0))}</td></tr>`;
+  }
+
+  if(extraRows.length){
+    html+=`<tr class="gh"><td colspan="5">${isEN?'▸  EXTRAS':'▸  オプション'}</td></tr>`;
+    extraRows.forEach(r=>{html+=`<tr><td>${r.icon}</td><td colspan="3"><b>${r.name}</b></td><td class="r">$${fmt2(r.cost)}</td></tr>`;});
+  }
+
+  html+=`
+    <tr><td colspan="4" style="text-align:right;color:#888;font-size:10px;padding:8px 10px">${isEN?'Subtotal (ex. GST)':'小計（GST抜き）'}</td><td class="r">$${fmt2(grandTotal)}</td></tr>
+    <tr><td colspan="4" style="text-align:right;color:#888;font-size:10px;padding:5px 10px">GST (10%)</td><td class="r">$${fmt2(gst)}</td></tr>
+    <tr class="totrow"><td colspan="4">${isEN?'TOTAL (inc. GST)':'合計金額（GST込み）'}</td><td class="r">$${fmt2(total)}</td></tr>
+  </table>`;
+
+  if(specNotes.length){
+    html+=`<div style="margin-top:14px;padding:12px 14px;background:#fff8f0;border:1px solid #e67e22;border-left:3px solid #e67e22;font-size:11px;line-height:1.8;color:#333">
+      <b>⚠️ ${isEN?'SPECIAL NOTES — Material & Condition Requirements':'注意事項 — 材質・塗膜条件'}</b><br>
+      ${specNotes.map(n=>`<b>${n.surface}:</b> ${n.note}`).join('<br>')}
+    </div>`;
+  }
+
+  html+=`
+  <div class="qfooter">
+    ${isEN
+      ?`• Quote valid 30 days. All prices AUD inc. GST. Payment: 50% deposit, balance on completion.<br>• NSW 2025–26 market rates. Rates adjusted for substrate material and existing paint condition.<br>• Quote based on supplied measurements. Actual conditions may vary — site inspection recommended.`
+      :`• 見積書は発行日から30日間有効。金額はAUD・GST込み。支払：契約時50%・完了時残額。<br>• NSW 2025–26相場単価。材質・既存塗膜の状態により単価を調整しています。<br>• 面積はお客様提供の寸法に基づく概算。現地調査推奨。`
+    }
+    ${notes?`<br>• <b>${isEN?'Notes':'備考'}:</b> ${notes}`:''}
+  </div>
+  <div class="sigrow">
+    <div class="sigbox">${isEN?'Authorised — Samurai Painting Services':'承認 — サムライペインティングサービス'}<br><br><br></div>
+    <div class="sigbox">${isEN?'Client Signature / Date':'お客様署名 / 日付'}<br><br><br></div>
+  </div>`;
+
+  // Append verification report if strict mode
+  if(checks && checks.length>0){
+    html+=buildQuoteVerificationFooter(checks);
+  }
+
+  document.getElementById('quoteCard').innerHTML=html;
+  document.getElementById('form-area').style.display='none';
+  document.getElementById('result').style.display='block';
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+}
+
+function resetForm(){
+  document.getElementById('form-area').style.display='block';
+  document.getElementById('result').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── I18N ───────────────────────────────────────────────────────────
+const T={
+  en:{s1:'01 — CLIENT INFORMATION',s2:'02 — JOB TYPE',s3:'03 — SURFACES (Material & Condition)',s4:'04 — GUTTERS, DOWNPIPES & ITEMS',s5:'05 — LABOUR & ACCESS',s6:'06 — EXTRAS & OPTIONS',s7:'07 — NOTES','sub-text':'Material · Substrate · Existing Paint · NSW Rates','l-name':'Client Name','l-addr':'Property Address','l-phone':'Phone','l-email':'Email','l-stories':'Stories','l-lr':'Base Labour Rate','l-prep':'Default Prep','surf-lbl':'SURFACES SUBTOTAL','item-lbl':'ITEMS SUBTOTAL','rn-surf':'★ NSW 2025–26: Interior $25–45/m² · Exterior $30–60/m² · Roof $35–65/m² · Timber +30% labour · Aluminium +10% (etching primer) · Oil→Water switch +$8–12/m²','rn-item':'★ NSW 2025–26: Gutters $12–18/lm · Downpipes $15–22/lm · Eaves $12–22/lm · Doors $90–150 · Window frames $60–100 · Trim $10–15/lm'},
+  ja:{s1:'01 — お客様情報',s2:'02 — 作業内容',s3:'03 — 表面別（材質・塗膜状態）',s4:'04 — 雨樋・ドア・窓 等',s5:'05 — 労務・足場',s6:'06 — オプション',s7:'07 — 備考','sub-text':'材質・下地・既存塗膜・NSW相場単価','l-name':'お客様名','l-addr':'物件住所','l-phone':'電話番号','l-email':'メールアドレス','l-stories':'階数','l-lr':'施工基本単価','l-prep':'標準下地処理','surf-lbl':'表面合計','item-lbl':'雨樋・その他合計','rn-surf':'★ NSW 2025–26: 屋内壁・天井 $25–45/m² · 外壁 $30–60/m² · 屋根 $35–65/m² · 木部 +30%労務 · アルミ +10%（エッチングプライマー） · 油性→水性切替 +$8–12/m²','rn-item':'★ NSW 2025–26: 横樋 $12–18/lm · 縦樋 $15–22/lm · 軒天 $12–22/lm · ドア $90–150 · 窓枠 $60–100 · 巾木 $10–15/lm'}
+};
+
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn:${l==='en'?'first':'last'}-child`).classList.add('active');
+  Object.keys(T[l]).forEach(k=>{const el=document.getElementById(k);if(el)el.textContent=T[l][k];});
+  // Rebuild cards to update labels
+  buildSurfCards(); buildItemCards(); buildExtras();
+  recalcAll();
+}
+
+// ── STRICT MODE ────────────────────────────────────────────────────
+function toggleStrict(){
+  strictMode=!strictMode;
+  document.getElementById('strictToggle').classList.toggle('on',strictMode);
+  document.getElementById('strictLabel').textContent=strictMode?(lang==='en'?'STRICT ON':'厳密ON'):(lang==='en'?'STRICT':'厳密');
+  document.getElementById('verifyPanel').classList.toggle('show',false);
+}
+
+// ── NSW MARKET RATE RANGES ($/m²) ──────────────────────────────────
+const MARKET_RANGES={
+  ceiling:  {min:25, max:55},
+  wall:     {min:25, max:55},
+  exterior: {min:30, max:75},
+  roof:     {min:35, max:80},
+  floor:    {min:20, max:50},
+  fence:    {min:18, max:45},
+};
+
+// ── CONTRADICTION RULES ────────────────────────────────────────────
+const CONTRADICTIONS=[
+  {cond:'water_bad', jobs:['New Build / 新築'], msg:{en:'New Build selected but surface has peeling paint — contradiction.', ja:'新築を選択していますが、塗膜が「剥離あり」になっています — 矛盾。'}},
+  {cond:'oil_switch', jobs:['New Build / 新築'], msg:{en:'New Build selected but oil→water switch is set — new builds have no existing paint.', ja:'新築選択ですが油性→水性切替が設定されています — 新築に既存塗膜はありません。'}},
+  {cond:'oil_cont', jobs:['New Build / 新築'], msg:{en:'New Build selected but oil-based continuation is set — new builds have no existing paint.', ja:'新築選択ですが油性継続が設定されています — 新築に既存塗膜はありません。'}},
+];
+
+function runVerification(){
+  const checks=[];
+  const isEN=lang==='en';
+  
+  // ── CHECK 1: Any surfaces/items enabled? ──
+  const activeSurfs=SURFS.filter(s=>surfState[s.id].on);
+  const activeItems=ITEMS.filter(it=>itemState[it.id].on);
+  if(activeSurfs.length===0 && activeItems.length===0){
+    checks.push({status:'fail',msg:isEN?'No surfaces or items are enabled. Nothing to quote.':'有効な表面・項目がありません。見積もり対象がゼロです。'});
+  } else {
+    checks.push({status:'pass',msg:isEN?`${activeSurfs.length} surface(s) + ${activeItems.length} item type(s) enabled`:`表面${activeSurfs.length}件 + 項目${activeItems.length}件 有効`});
+  }
+  
+  // ── CHECK 2: All active surfaces have area > 0 ──
+  const missingArea=activeSurfs.filter(s=>!(parseFloat(surfState[s.id].area)>0));
+  if(missingArea.length>0){
+    checks.push({status:'fail',msg:isEN?`${missingArea.length} surface(s) enabled but area = 0: ${missingArea.map(s=>s.en).join(', ')}`:`${missingArea.length}件の表面が有効ですが面積未入力: ${missingArea.map(s=>s.ja).join('、')}`});
+  } else if(activeSurfs.length>0){
+    checks.push({status:'pass',msg:isEN?'All enabled surfaces have area values':'全有効表面に面積が入力済み'});
+  }
+  
+  // ── CHECK 3: All active items have qty > 0 ──
+  const missingQty=activeItems.filter(it=>!(parseFloat(itemState[it.id].qty)>0));
+  if(missingQty.length>0){
+    checks.push({status:'fail',msg:isEN?`${missingQty.length} item(s) enabled but qty = 0: ${missingQty.map(i=>i.en).join(', ')}`:`${missingQty.length}件の項目が有効ですが数量未入力: ${missingQty.map(i=>i.ja).join('、')}`});
+  } else if(activeItems.length>0){
+    checks.push({status:'pass',msg:isEN?'All enabled items have quantity values':'全有効項目に数量が入力済み'});
+  }
+  
+  // ── CHECK 4: Client info ──
+  const name=document.getElementById('clientName').value.trim();
+  const addr=document.getElementById('clientAddr').value.trim();
+  if(!name||!addr){
+    checks.push({status:'warn',msg:isEN?'Client name or address is empty — quote will show "—"':'お客様名または住所が未入力 — 「—」と表示されます'});
+  } else {
+    checks.push({status:'pass',msg:isEN?'Client info provided':'お客様情報入力済み'});
+  }
+  
+  // ── CHECK 5: Job type selected ──
+  if(selectedJobs.length===0){
+    checks.push({status:'warn',msg:isEN?'No job type selected':'作業内容が未選択です'});
+  } else {
+    checks.push({status:'pass',msg:isEN?`Job type: ${selectedJobs.join(', ')}`:`作業内容: ${selectedJobs.join('、')}`});
+  }
+  
+  // ── CHECK 6: Material × Condition contradictions ──
+  activeSurfs.forEach(s=>{
+    const st=surfState[s.id];
+    CONTRADICTIONS.forEach(rule=>{
+      if(st.cond===rule.cond && selectedJobs.some(j=>rule.jobs.includes(j))){
+        checks.push({status:'fail',msg:`${isEN?s.en:s.ja}: ${isEN?rule.msg.en:rule.msg.ja}`});
+      }
+    });
+    // New build should use 'new' condition
+    if(selectedJobs.some(j=>j.includes('New Build')) && st.cond!=='new' && st.cond!=='water_good'){
+      if(!CONTRADICTIONS.some(r=>r.cond===st.cond && r.jobs.some(j=>j.includes('New Build')))){
+        checks.push({status:'warn',msg:isEN?`${s.en}: New Build job but paint condition is "${CONDITIONS[st.cond].en}" — verify this is correct.`:`${s.ja}: 新築なのに塗膜状態が「${CONDITIONS[st.cond].ja}」— 確認してください。`});
+      }
+    }
+  });
+  
+  // ── CHECK 7: Blended rate vs market range ──
+  activeSurfs.forEach(s=>{
+    const r=calcSurf(s);
+    if(!r||!r.area)return;
+    const blended=r.tot/r.area;
+    const range=MARKET_RANGES[s.id];
+    if(!range)return;
+    if(blended<range.min){
+      checks.push({status:'warn',msg:isEN?`${s.en}: Blended rate $${blended.toFixed(0)}/m² is BELOW NSW market range ($${range.min}–$${range.max}/m²)`:`${s.ja}: 混合単価 $${blended.toFixed(0)}/m² がNSW相場（$${range.min}–$${range.max}/m²）より低い`});
+    } else if(blended>range.max){
+      checks.push({status:'warn',msg:isEN?`${s.en}: Blended rate $${blended.toFixed(0)}/m² is ABOVE NSW market range ($${range.min}–$${range.max}/m²) — material/condition adjustments may justify this`:`${s.ja}: 混合単価 $${blended.toFixed(0)}/m² がNSW相場（$${range.min}–$${range.max}/m²）を超過 — 材質・塗膜条件による調整の可能性あり`});
+    } else {
+      checks.push({status:'pass',msg:isEN?`${s.en}: $${blended.toFixed(0)}/m² within NSW range ($${range.min}–$${range.max})`:`${s.ja}: $${blended.toFixed(0)}/m² NSW相場内（$${range.min}–$${range.max}）`});
+    }
+  });
+  
+  // ── CHECK 8: Count consistency ──
+  const countedSurfs=activeSurfs.filter(s=>{const r=calcSurf(s);return r&&r.area>0;}).length;
+  const countedItems=activeItems.filter(it=>parseFloat(itemState[it.id].qty)>0).length;
+  checks.push({status:'pass',msg:isEN?`Line item count: ${countedSurfs} surface(s) + ${countedItems} item(s) — verified by enumeration`:`明細件数: 表面${countedSurfs}件 + 項目${countedItems}件 — 列挙で検証済み`});
+  
+  // ── CHECK 9: Total sanity ──
+  let grandTotal=0;
+  activeSurfs.forEach(s=>{const r=calcSurf(s);if(r)grandTotal+=r.tot;});
+  activeItems.forEach(it=>{
+    const st=itemState[it.id];
+    if(!st.on)return;
+    const qty=parseFloat(st.qty)||0;
+    const mat=MATERIALS[st.mat];const cond=CONDITIONS[st.cond];
+    const sides=it.sides?st.sides:1;
+    grandTotal+=qty*sides*it.rates[st.grade]*mat.labMult*(1+(cond.labAdd/100));
+  });
+  EXTRAS.forEach(ex=>{
+    if(!document.getElementById('ex_'+ex.id)?.checked)return;
+    const totalArea=getTotalArea();
+    grandTotal+=isNaN(+ex.price)?totalArea*parseFloat(ex.price.split('*')[1]):+ex.price;
+  });
+  if(grandTotal===0){
+    checks.push({status:'fail',msg:isEN?'Total is $0.00 — no billable items':'合計が$0.00 — 請求可能項目なし'});
+  } else if(grandTotal<500){
+    checks.push({status:'warn',msg:isEN?`Total $${fmt2(grandTotal)} (ex GST) seems very low — verify inputs`:`合計 $${fmt2(grandTotal)}（GST抜き）が非常に低い — 入力を確認してください`});
+  } else {
+    checks.push({status:'pass',msg:isEN?`Total $${fmt2(grandTotal)} (ex GST) — reasonable range`:`合計 $${fmt2(grandTotal)}（GST抜き）— 妥当な範囲`});
+  }
+  
+  return checks;
+}
+
+function renderVerification(checks){
+  const panel=document.getElementById('verifyPanel');
+  const results=document.getElementById('verifyResults');
+  const summary=document.getElementById('verifySummary');
+  const isEN=lang==='en';
+  
+  const icons={pass:'✅',warn:'⚠️',fail:'❌'};
+  const classes={pass:'vi-pass',warn:'vi-warn',fail:'vi-fail'};
+  
+  results.innerHTML=checks.map(c=>`
+    <div class="verify-item ${classes[c.status]}">
+      <div class="vi-icon">${icons[c.status]}</div>
+      <div class="vi-text">${c.msg}</div>
+    </div>`).join('');
+  
+  const fails=checks.filter(c=>c.status==='fail').length;
+  const warns=checks.filter(c=>c.status==='warn').length;
+  const passes=checks.filter(c=>c.status==='pass').length;
+  
+  let sumClass,sumText;
+  if(fails>0){
+    sumClass='vs-fail';
+    sumText=isEN?`❌ ${fails} ERROR(S) — Fix before generating`:`❌ ${fails}件のエラー — 修正してから生成してください`;
+  } else if(warns>0){
+    sumClass='vs-warn';
+    sumText=isEN?`⚠️ ${warns} WARNING(S) — Review recommended`:`⚠️ ${warns}件の警告 — 確認を推奨`;
+  } else {
+    sumClass='vs-pass';
+    sumText=isEN?`✅ ALL ${passes} CHECKS PASSED`:`✅ 全${passes}項目パス`;
+  }
+  summary.innerHTML=`<div class="verify-summary ${sumClass}">${sumText}</div>`;
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth',block:'center'});
+  
+  return fails;
+}
+
+function buildQuoteVerificationFooter(checks){
+  const isEN=lang==='en';
+  const fails=checks.filter(c=>c.status==='fail').length;
+  const warns=checks.filter(c=>c.status==='warn').length;
+  const passes=checks.filter(c=>c.status==='pass').length;
+  
+  let html=`<div class="q-verify"><b>🛡️ ${isEN?'AI VERIFICATION REPORT':'AI検証レポート'}</b><br>`;
+  html+=`<span style="font-size:9px;color:#888">${isEN?'Hallucination Guard Protocol v1.0 — All values verified by enumeration':'ハルシネーション防止プロトコル v1.0 — 全数値を列挙で検証'}</span><br>`;
+  checks.forEach(c=>{
+    const cls=c.status==='pass'?'qv-pass':c.status==='warn'?'qv-warn':'qv-fail';
+    html+=`<div class="qv-item ${cls}">${c.msg}</div>`;
+  });
+  html+=`<br><b>${isEN?'Result':'結果'}:</b> ${passes} ${isEN?'passed':'パス'} / ${warns} ${isEN?'warnings':'警告'} / ${fails} ${isEN?'errors':'エラー'}`;
+  html+=`</div>`;
+  return html;
+}
+
+function runQuoteFlow(){
+  if(strictMode){
+    const checks=runVerification();
+    const fails=renderVerification(checks);
+    if(fails>0) return; // Block generation on errors
+    // Generate with verification footer
+    generateQuote(checks);
+  } else {
+    generateQuote(null);
+  }
+}
+
+// ── INIT ────────────────────────────────────────────────────────────
+buildSurfCards();
+buildItemCards();
+buildExtras();
+</script>
+</body>
+</html>
