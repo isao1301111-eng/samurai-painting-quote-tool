@@ -7,6 +7,19 @@
 
 ---
 
+## スクリーンショット / Screenshots
+
+### 入力フォーム / Input Form
+![Quote Form](<スクリーンショット 2026-05-20 215029.png>)
+
+### 検証プロトコル（エラー検出）/ Verification Protocol (Errors Detected)
+![Verification Protocol](<スクリーンショット 2026-05-20 215230.png>)
+
+### AI検証レポート（通過）/ AI Verification Report (Passed)
+![AI Verification Report](<スクリーンショット 2026-05-20 215354.png>)
+
+---
+
 ## 概要 / Overview
 
 シドニーの塗装業向けに開発した、AI検証プロトコル搭載の見積もり自動化ツール。
@@ -137,7 +150,7 @@ AI Consultant & Automation Specialist (ex-Painting Contractor, 27 years)
 
 ## ロードマップ / Roadmap
 
-- [ ] Screenshots (STRICT MODE ON/OFF comparison)
+- [x] Screenshots (STRICT MODE ON/OFF comparison)
 - [ ] Claude API連携 — 音声入力→自動見積もり生成
 - [ ] Stripe Billing統合 — 見積もり承認後に自動請求
 - [ ] Multi-language (English / Japanese / Thai)
