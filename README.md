@@ -5,6 +5,12 @@
 > 📍 Sydney, Australia → Japan (Oct 2026)  
 > 🔗 [linkedin.com/in/isao-matsumoto-1b271411b](https://linkedin.com/in/isao-matsumoto-1b271411b)
 
+[![Try the Live App (v6)](https://img.shields.io/badge/%F0%9F%9A%80_Try_the_Live_App-v6-C9A84C)](https://isao1301111-eng.github.io/samurai-painting-quote/samurai-painting-quote-v6.html)
+[![Application Repo](https://img.shields.io/badge/Application_Repo-samurai--painting--quote-blue)](https://github.com/isao1301111-eng/samurai-painting-quote)
+
+> 📌 これは **LinkedIn 用のポートフォリオ紹介ページ**です。実際に動くアプリ本体（v4 → v6）は [**samurai-painting-quote**](https://github.com/isao1301111-eng/samurai-painting-quote) にあります。
+> 📌 This is the **portfolio write-up for LinkedIn.** The working application (v4 → v6) lives in [**samurai-painting-quote**](https://github.com/isao1301111-eng/samurai-painting-quote).
+
 ---
 
 ## スクリーンショット / Screenshots
@@ -32,12 +38,17 @@ Features automatic validation of materials, paint conditions, NSW market rates, 
 
 ## ファイル構成 / Files
 
-| File | Version | Description |
+このリポジトリには progression（進化の過程）を示すスナップショットとして v4・v5 を同梱しています。**最新の v6 は本体アプリリポジトリ [samurai-painting-quote](https://github.com/isao1301111-eng/samurai-painting-quote) で公開・稼働中**です。
+
+This repo bundles the v4 / v5 snapshots to show the progression. **The latest v6 is published and running in the application repo [samurai-painting-quote](https://github.com/isao1301111-eng/samurai-painting-quote).**
+
+| File / Link | Version | Description |
 |------|---------|-------------|
-| `samurai-painting-quote-v5.html` | **v5 (Latest)** | + Hallucination Guard Protocol v1.0 |
+| [▶ Live v6](https://isao1301111-eng.github.io/samurai-painting-quote/samurai-painting-quote-v6.html) | **v6 (Latest)** | + AI free-text input & Saved Quotes/Clients ledger（本体リポで公開）|
+| `samurai-painting-quote-v5.html` | v5 | + Hallucination Guard Protocol v1.0 |
 | `samurai-painting-quote-v4.html` | v4 | Baseline — material/condition/NSW rate engine |
 
-> v4 is kept intentionally to show the diff and progression.
+> v4 / v5 is kept intentionally to show the diff and progression.
 
 ---
 
@@ -85,6 +96,26 @@ detecting logical contradictions, missing inputs, and market-rate deviations.
 - `fail` (赤) → 見積もり生成ブロック / Quote generation blocked
 - `warn` (黄) → 警告表示・生成は可能 / Warning shown, generation allowed
 - `pass` (緑) → 検証通過 / Verification passed
+
+---
+
+## 📂 v6 — AI自由記述入力 & 見積もり台帳 / AI Free-Text Input & Quote Ledger
+
+> ▶ **Live demo:** [samurai-painting-quote-v6.html](https://isao1301111-eng.github.io/samurai-painting-quote/samurai-painting-quote-v6.html)（本体リポで公開 / hosted in the application repo）
+
+v6 は v5 の上に **2つ** を追加した最新版です。
+
+**🤖 AI自由記述入力（LLM × Guard）**  
+「築20年の木造2階建て、外壁80㎡、ひび割れあり、油性から水性に塗り替え」のように自由文で書くと、AIがフォームに構造化 → その後 **13項目のハルシネーション防止がAI自身の出力を検証**（塗料量・塗料金額・矛盾・NSW相場）してから見積もりへ進みます。これは本ポートフォリオの主張を1つの流れで体現します：*LLMは速いが幻覚する／ルールエンジンは正確だが融通が利かない → 組み合わせて互いの弱点を消す。* 既定は鍵不要の**オフラインのデモ解析**で誰でも動作。自分の Claude API キーを入れると本物の `claude-opus-4-8` 抽出に切替（キーはブラウザ内のみに保存）。
+
+Describe the job in plain English/Japanese and the tool structures it into the form — then a **13-point Hallucination Guard verifies the AI's own output** (paint volume & cost, contradictions, NSW rates) before quoting. Runs on an offline demo parser by default; add your own Claude API key for real `claude-opus-4-8` extraction.
+
+**📂 永続化層（見積もり台帳）/ Persistence layer**  
+- 💾 **保存 / Save** — お客様情報・全入力・検証結果ごと見積もりを保存
+- 📂 **履歴・顧客管理タブ / History & Clients** — 顧客名／住所／見積番号で検索
+- ↩ **復元 / Restore** ・ ⧉ **複製 / Duplicate** — 過去見積もりの再編集・別プラン作成
+- 📤📥 **JSON エクスポート／インポート** — 全データのバックアップ・端末間移行
+- データはブラウザ内（`localStorage`）に保存 — **サーバー不要・API不要・単一HTML**
 
 ---
 
@@ -151,6 +182,7 @@ AI Consultant & Automation Specialist (ex-Painting Contractor, 27 years)
 ## ロードマップ / Roadmap
 
 - [x] Screenshots (STRICT MODE ON/OFF comparison)
-- [ ] Claude API連携 — 音声入力→自動見積もり生成
+- [x] Claude API連携 — 自由記述テキスト → 自動見積もり生成（v6 で実装 / shipped in v6）
+- [ ] 音声入力 → 自動見積もり生成 / Voice input
 - [ ] Stripe Billing統合 — 見積もり承認後に自動請求
 - [ ] Multi-language (English / Japanese / Thai)
