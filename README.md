@@ -2,7 +2,7 @@
 **AI-Powered Painting Estimation with Hallucination Guard Protocol**
 
 > 🛡️ Portfolio Project — Isao Matsumoto | AI Consultant & Automation Specialist  
-> 📍 Sydney, Australia → Japan (Oct 2026)  
+> 📍 Sydney, Australia → Japan (Sep 2026)  
 > 🔗 [linkedin.com/in/isao-matsumoto-1b271411b](https://linkedin.com/in/isao-matsumoto-1b271411b)
 
 [![Try the Live App (v6)](https://img.shields.io/badge/%F0%9F%9A%80_Try_the_Live_App-v6-C9A84C)](https://isao1301111-eng.github.io/samurai-painting-quote/samurai-painting-quote-v6.html)
@@ -158,6 +158,19 @@ This tool demonstrates:
 - **Iterative improvement**: v4→v5 diff shows the ability to systematically upgrade software
 
 ---
+
+## 開発の歩み（課題 → 解決）/ Development Story
+
+一度で完成したのではなく、**「AIをどう信用させるか」という一貫した問いに沿って v4 → v5 → v6 と進化**させました。
+Not built in one shot — evolved v4 → v5 → v6 around one question: *how do you make an AI estimate trustworthy?*
+
+| バージョン | ぶつかった課題 / Problem | 解決 / Solution |
+|---|---|---|
+| **v4** | 材質・塗膜状態・NSW相場を手計算していた | 材質別単価×状態補正×市場レンジ照合の計算エンジン化 |
+| **v5** | 生成された見積もりを人間が目視で検証するしかなかった | 生成前に走る**9項目の自動検証エンジン**（論理矛盾・入力漏れ・市場乖離を検知しブロック）＝「AIの出力を検証するAI」 |
+| **v6** | LLM自由入力は速いが幻覚する／ルールエンジンは正確だが融通が利かない | 両者を組み合わせ、**AI自身の出力を13項目で検証**してから見積もりへ。加えて保存・顧客台帳で実務運用に耐える形へ |
+
+一貫思想は **Hallucination Guard**：*件数を出すなら、全部言える状態で出せ*（検証#8で実装）。詳しい時系列は [CHANGELOG.md](CHANGELOG.md)、設計判断の物語は [CASE_STUDY.md](CASE_STUDY.md) を参照。
 
 ## 使い方 / How to Use
 
