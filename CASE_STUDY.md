@@ -51,6 +51,6 @@ v4までは、出てきた見積もりを**人間が目視でチェック**す�
 
 ---
 
-**作者**：松本 勲（Isao Matsumoto）— AI Consultant & Automation Specialist（建築塗装27年・日豪で自営業計10年）。
+**作者**：松本 勲（Isao Matsumoto）— AI Automation Developer（建築塗装27年・日豪で自営業計10年）。
 🔗 [LinkedIn](https://linkedin.com/in/isao-matsumoto-1b271411b)
 同じ「ハルシネーション防止」思想で設計した現場日報アプリ：[genba-nippo-tool](https://github.com/isao1301111-eng/genba-nippo-tool)

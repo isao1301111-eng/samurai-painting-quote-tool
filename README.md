@@ -1,7 +1,7 @@
 # Samurai Painting Quote Tool
 **AI-Powered Painting Estimation with Hallucination Guard Protocol**
 
-> 🛡️ Portfolio Project — Isao Matsumoto | AI Consultant & Automation Specialist  
+> 🛡️ Portfolio Project — Isao Matsumoto | AI Automation Developer（建築塗装27年 × AI）  
 > 📍 Sydney, Australia → Japan (Sep 2026)  
 > 🔗 [linkedin.com/in/isao-matsumoto-1b271411b](https://linkedin.com/in/isao-matsumoto-1b271411b)
 
@@ -186,7 +186,7 @@ Not built in one shot — evolved v4 → v5 → v6 around one question: *how do 
 ## 作者 / Author
 
 **松本 勲 / Isao Matsumoto**  
-AI Consultant & Automation Specialist (ex-Painting Contractor, 27 years)  
+AI Automation Developer (27 yrs in painting × AI)  
 📧 isao1301111@gmail.com  
 🔗 [LinkedIn](https://linkedin.com/in/isao-matsumoto-1b271411b)
 
